@@ -35,8 +35,8 @@ if __name__ == "__main__":
         minibatch_size=128,
         gradient_clipping=0.5,
         log_path="logs/run_log.txt",
-        checkpoints_path="checkpoints/ppo11",
-        load_epoch= 277,
+        checkpoints_path="checkpoints/ppo",
+        load_epoch= 548,
     )
 
     ppo.run(env)

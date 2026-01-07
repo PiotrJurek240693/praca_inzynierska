@@ -34,9 +34,9 @@ if __name__ == "__main__":
         critic_train_iterations=80,
         minibatch_size=128,
         gradient_clipping=0.5,
-        log_path="logs/log11.txt",
-        checkpoints_path="checkpoints/ppo11",
-        load_epoch = 138,
+        log_path="logs/log.txt",
+        checkpoints_path="checkpoints/ppo",
+        load_epoch = 548,
     )
 
     actor.to(device)
