@@ -1,14 +1,14 @@
 import numpy as np
 import torch
 import torch.optim as optim
-from code.environment.TrackmaniaEnv import TrackmaniaEnv
-from code.game_communication.Controllers import GamepadController
-from code.ppo.PPO import PPO, Actor, Critic
+from src.environment.TrackmaniaEnv import TrackmaniaEnv
+from src.game_communication.Controllers import GamepadController
+from src.ppo.PPO import PPO, Actor, Critic
 
 if __name__ == "__main__":
     device = "cuda" if torch.cuda.is_available() else "cpu"
 
-    checkpoint_file = "maps/Test.Map.txt"
+    checkpoint_file = "maps/Test2.Map.txt"
     env = TrackmaniaEnv(GamepadController(), checkpoint_file)
 
     obs_dimension = int(np.prod(env.observation_space.shape))
@@ -34,9 +34,15 @@ if __name__ == "__main__":
         critic_train_iterations=80,
         minibatch_size=128,
         gradient_clipping=0.5,
-        log_path="logs/log.txt",
-        checkpoints_path="checkpoints/ppo6",
-        load_epoch= 270,
+        log_path="logs/log11.txt",
+        checkpoints_path="checkpoints/ppo11",
+        load_epoch = 138,
     )
 
-    ppo.run(env)
+    actor.to(device)
+    critic.to(device)
+
+    epochs = 100000
+    steps_per_epoch = 4096
+
+    ppo.train(env, steps_per_epoch=steps_per_epoch, epochs=epochs)

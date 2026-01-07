@@ -1,8 +1,8 @@
 import os
 import cv2
 import numpy as np
-from code.game_communication.WindowCapture import WindowCapture
-from code.game_communication.DistanceDetector import DistanceDetector
+from src.game_communication.WindowCapture import WindowCapture
+from src.game_communication.DistanceDetector import DistanceDetector
 
 if __name__ == "__main__":
     capture = WindowCapture("Trackmania")

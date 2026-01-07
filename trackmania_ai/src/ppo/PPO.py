@@ -4,7 +4,7 @@ from torch import Tensor
 import torch
 import torch.nn as nn
 import torch.optim as optim
-from torch.distributions import Normal, TanhTransform, TransformedDistribution
+from torch.distributions import Normal
 
 class PPO:
     def __init__(
@@ -210,13 +210,29 @@ class PPO:
                 "critic": self.critic.state_dict(),
             }, f"{self.checkpoints_path}/epoch_{epoch:03d}.pt")
 
+    #def run(self, env):
+        #obs, _ = env.reset()
+        #while True:
+            #with torch.no_grad():
+                #obs_tensor = torch.as_tensor(obs, dtype=torch.float32, device=self.device).unsqueeze(0)
+                #dist = self.actor(obs_tensor)
+                #action = dist.sample().squeeze(0).cpu().numpy()
+                #action = self.actor(obs_tensor).mean.squeeze(0).cpu().numpy()
+                #obs, _, _, _, _ = env.step(action)
+
     def run(self, env):
+        if hasattr(env, "resume"):
+            env.resume()
+        env.flip = False
         obs, _ = env.reset()
         while True:
             with torch.no_grad():
-                obs_tensor = torch.as_tensor(obs, dtype=torch.float32, device=self.device).unsqueeze(0)
-                action = self.actor(obs_tensor).mean.squeeze(0).cpu().numpy()
-                obs, _, _, _, _ = env.step(action)
+                dist = self.actor(torch.as_tensor(obs, dtype=torch.float32, device=self.device).unsqueeze(0))
+                action = dist.mean.squeeze(0).cpu().numpy()
+                action = np.clip(action, env.action_space.low, env.action_space.high)
+            obs, reward, done, _, _ = env.step(action)
+            if done:
+                obs, _ = env.reset()
 
     def load_checkpoint(self) -> None:
         ckpt = torch.load(f"{self.checkpoints_path}/epoch_{self.load_epoch:03d}.pt", map_location=self.device, weights_only=False)

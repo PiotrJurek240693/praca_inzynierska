@@ -1,4 +1,4 @@
-from code.ppo.PPO import Actor, Critic
+from src.ppo.PPO import Actor, Critic
 from torchview import draw_graph
 
 if __name__ == "__main__":

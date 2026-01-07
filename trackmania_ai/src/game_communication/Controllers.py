@@ -1,4 +1,3 @@
-import time
 import keyboard
 import vgamepad as vg
 

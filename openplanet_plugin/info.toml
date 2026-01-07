@@ -1,0 +1,7 @@
+[meta]
+name = "Data Collector"
+author = "Piotr Jurek"
+category = "Data Collector"
+version = "1.0"
+[script]
+dependencies = [ "VehicleState" ]
